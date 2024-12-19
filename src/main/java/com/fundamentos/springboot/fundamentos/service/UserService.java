@@ -1,5 +1,6 @@
 package com.fundamentos.springboot.fundamentos.service;
 
+import com.fundamentos.springboot.fundamentos.dto.UserDto;
 import com.fundamentos.springboot.fundamentos.entity.User;
 import com.fundamentos.springboot.fundamentos.repository.UserRepository;
 import org.apache.juli.logging.Log;
@@ -18,11 +19,10 @@ public class UserService {
        this.userRepository = userRepository;
     }
     @Transactional
-    public void saveTransaccional (List<User> users){
+    public void saveListUser (List<User> users){
         users.stream().peek(user -> LOG.info("insertado : "+ user))
                 .forEach(user -> userRepository.save(user));
     }
-
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -32,19 +32,14 @@ public class UserService {
     }
 
     public void delete (Long id){
-        userRepository.delete(new User(id));
+        userRepository.deleteById(id);
     }
 
-    public User update(User newUser, Long id) {
-      return
-              userRepository.findById(id)
-             .map(
-                     user -> {
-                         user.setEmail(newUser.getEmail());
-                         user.setBirthDate((newUser.getBirthDate()));
-                         user.setName(newUser.getName());
-                         return userRepository.save(user);
-                     }
-             ).get();
+    public User update(UserDto newUser, Long id) {
+      User user =  userRepository.findById(id).get();
+      user.setName(newUser.getName());
+      user.setEmail(newUser.getEmail());
+      user.setBirthDate(newUser.getBirthDate());
+      return userRepository.save(user);
     }
 }

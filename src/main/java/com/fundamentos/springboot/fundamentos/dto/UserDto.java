@@ -1,41 +1,30 @@
 package com.fundamentos.springboot.fundamentos.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fundamentos.springboot.fundamentos.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class UserDto {
+@Data
+@NoArgsConstructor
+public class UserDto implements Serializable {
     private Long id;
     private String name;
+    private String email;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
-
-    public UserDto(Long id, String name, LocalDate birthDate) {
-        this.id = id;
-        this.name = name;
-        this.birthDate = birthDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.birthDate = user.getBirthDate();
     }
 
     @Override

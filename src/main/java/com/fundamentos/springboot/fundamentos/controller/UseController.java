@@ -4,6 +4,7 @@ import com.fundamentos.springboot.fundamentos.caseuse.CreateUser;
 import com.fundamentos.springboot.fundamentos.caseuse.DeleteUser;
 import com.fundamentos.springboot.fundamentos.caseuse.GetUser;
 import com.fundamentos.springboot.fundamentos.caseuse.UpdateUser;
+import com.fundamentos.springboot.fundamentos.dto.UserDto;
 import com.fundamentos.springboot.fundamentos.entity.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,16 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserRestController {
-    // create, get, eliminar, actualizar
-    // create, get, delate, update}
-
+public class UseController {
     private GetUser getUser;
     private CreateUser createUser;
     private DeleteUser deleteUser;
     private UpdateUser updateUser;
 
-    public UserRestController(GetUser getUser, CreateUser createUser, DeleteUser deleteUser, UpdateUser updateUser) {
+    public UseController(GetUser getUser, CreateUser createUser, DeleteUser deleteUser, UpdateUser updateUser) {
         this.getUser = getUser;
         this.createUser = createUser;
         this.deleteUser = deleteUser;
@@ -31,13 +29,12 @@ public class UserRestController {
 
     }
 
-@GetMapping("/")
-    List<User> get(){
-       return getUser.getAll();
+    @GetMapping("/list-user")
+    List<User> getAllUser(){
+        return getUser.getAll();
     }
-    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PostMapping("/")
-    ResponseEntity<User> newUser(@RequestBody User newUser){
+    @PutMapping(value = "/create-user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> createUser(@RequestBody UserDto newUser) {
         return new ResponseEntity<>(createUser.save(newUser), HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
@@ -45,8 +42,8 @@ public class UserRestController {
         deleteUser.remove(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    @PutMapping("/{id}")
-    ResponseEntity<User> replaceUser (@RequestBody User newUser, @PathVariable Long id){
+    @PutMapping("/update-user/{id}")
+    ResponseEntity<User> updateUser (@RequestBody UserDto newUser, @PathVariable Long id){
     return new ResponseEntity<>(updateUser.update(newUser , id), HttpStatus.OK);
 
     }

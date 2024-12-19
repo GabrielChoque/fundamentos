@@ -15,22 +15,21 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query(" Select u from User u where u.email=?1")
+    @Query(" Select u " +
+            "from User u " +
+            "where u.email=?1")
     Optional<User> findyUserEmail(String email);
-
-    @Query("select u from User u where u.name like ?1%")
+    @Query("select u " +
+            "from User u " +
+            "where u.name like ?1%")
     List<User> findAndSort(String name, Sort sort);
-
     List<User>  findByName(String name);
     Optional<User>  findByEmailAndName(String email ,String name);
-
     List<User> findByNameLike(String name);
-
     List<User> findByNameOrEmail(String name , String email);
     List<User> findByBirthDateBetween(LocalDate a , LocalDate b);
-    List<User> findByNameLikeOrderByIdDesc(String name); // igual se puede hacer con contain
-
-    @Query("SELECT new com.fundamentos.springboot.fundamentos.dto.UserDto(u.id,u.name,u.birthDate)"+
+    List<User> findByNameLikeOrderByIdDesc(String name);
+    @Query("SELECT new com.fundamentos.springboot.fundamentos.dto.UserDto(u)"+
             "FROM User u " +
             "Where u.birthDate =:parametroFecha "+
             "AND u.email =:parametroEmail ")

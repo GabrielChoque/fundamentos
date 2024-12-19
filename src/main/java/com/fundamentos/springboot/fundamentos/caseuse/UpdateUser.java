@@ -1,8 +1,8 @@
 package com.fundamentos.springboot.fundamentos.caseuse;
 
+import com.fundamentos.springboot.fundamentos.dto.UserDto;
 import com.fundamentos.springboot.fundamentos.entity.User;
 import com.fundamentos.springboot.fundamentos.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +13,7 @@ public class UpdateUser {
         
     }
 
-    public User update(User newUser, Long id) {
+    public User update(UserDto newUser, Long id) {
         return userService.update(newUser, id);
     }
 }
